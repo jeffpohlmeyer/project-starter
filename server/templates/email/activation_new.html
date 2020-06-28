@@ -5,23 +5,23 @@
 {% endblock subject %}
 
 {% block text_body %}
-  {% blocktrans %}You're receiving this email because you need to finish activation process on {{ site_name }}.{% endblocktrans %}
+  {% blocktrans %}You're receiving this email this email address has been used to register an account on {{ site_name }} that needs to be activated.{% endblocktrans %}
 
-  {% trans "Please go to the following page to activate account:" %}
-  http://localhost:8080/{{ url|safe }}
+  {% trans "Please go to the following page to activate your account:" %}
+  {{ url|safe }}
 
   {% blocktrans %}The {{ site_name }} team{% endblocktrans %}
 {% endblock text_body %}
 
 {% block html_body %}
-  <p>{% blocktrans %}You're receiving this email because you need to finish activation process on {{ site_name }}.{% endblocktrans %}</p>
+  <p>{% blocktrans %}You're receiving this email this email address has been used to register an account on {{ site_name }} that needs to be activated.{% endblocktrans %}</p>
 
-  <p>{% trans "Please go to the following page to activate account:" %}</p>
-  <p><a href="http://localhost:8080/{{ url|safe }}">http://localhost:8080/{{ url|safe }}</a></p>
+  <p>{% trans "Please go to the following page to activate your account:" %}</p>
+  <p><a href="{{ url|safe }}">{{ url|safe }}</a></p>
 
-  <p>If the link above does not work then copy and paste this link into your browser http://localhost:8080/{{ url|safe }}</p>
+  <p>If the link above does not work then copy and paste this link into your browser {{ url|safe }}</p>
 
-  <p>{% trans "Thanks for using our site!" %}</p>
+  <p>{% trans "Thanks for signing up!" %}</p>
 
   <p>{% blocktrans %}The {{ site_name }} team{% endblocktrans %}</p>
 

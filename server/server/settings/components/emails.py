@@ -1,8 +1,6 @@
 from decouple import config
 
 
-EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
-
 ANYMAIL = {
     'MAILGUN_API_KEY': config('MAILGUN_API_KEY'),
     'MAILGUN_SENDER_DOMAIN': config('MAILGUN_DOMAIN')
