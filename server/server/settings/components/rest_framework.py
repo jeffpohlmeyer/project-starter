@@ -20,9 +20,20 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL': 'auth/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'user/confirm/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL': True,
     'EMAIL': {
         'activation': 'users.email.CustomActivationEmail',
+        'confirmation': 'users.email.CustomConfirmationEmail',
+        'password_reset': 'users.email.CustomPasswordResetEmail',
+        'password_changed_confirmation':
+            'users.email.CustomPasswordChangedConfirmationEmail',
+        'username_changed_confirmation':
+            'users.email.CustomUsernameChangedConfirmationEmail',
+        'username_reset': 'users.email.CustomUsernameResetEmail'
     },
     'USER_CREATE_PASSWORD_RETYPE': True,
-    'SET_PASSWORD_RETYPE': True
+    'SET_USERNAME_RETYPE': True,
+    'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'USERNAME_RESET_CONFIRM_RETYPE': True
 }
