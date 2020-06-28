@@ -137,6 +137,7 @@ wheels/
 *.egg 
 *.manifest 
 *.spec 
+migrations/
 
 # Installer logs 
 pip-log.txt 
