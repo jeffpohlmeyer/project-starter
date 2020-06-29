@@ -4,6 +4,9 @@ from server.settings.components import BASE_DIR
 
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
+
+AUTH_USER_MODEL = "users.CustomUser"
+
 INSTALLED_APPS = (
     # my apps
     'users.apps.UsersConfig',
