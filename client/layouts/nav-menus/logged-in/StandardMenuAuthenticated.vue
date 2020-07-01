@@ -1,14 +1,14 @@
 <template>
   <div>
-    <nuxt-link to="/user/log-out">Logout</nuxt-link>
+    <base-button text :small="false" @click="logout">Logout</base-button>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    async logout() {
-      await this.$auth.logout()
+    logout() {
+      this.$store.commit('auth/clearTokens')
     },
   },
 }

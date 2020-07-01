@@ -3,7 +3,6 @@ export const state = () => ({
   snackbarMessage: '',
   snackbarColor: 'error',
   snackbarTimeout: 7500,
-  refresh: '',
 })
 
 export const mutations = {
@@ -12,9 +11,6 @@ export const mutations = {
     state.snackbarMessage = payload.message || ''
     state.snackbarColor = payload.color || 'error'
     state.snackbarTimeout = payload.timeout || 7500
-  },
-  setRefresh(state, payload) {
-    state.refresh = payload
   },
 }
 

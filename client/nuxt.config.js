@@ -59,48 +59,12 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/auth',
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
   axios: { baseURL: 'http://localhost:8000/' },
-  /**
-   * Auth module options
-   */
-  auth: {
-    localStorage: false,
-    cookie: {
-      options: {
-        // secure: true,
-        expires: 7,
-      },
-    },
-    redirect: {
-      logout: '/',
-    },
-    strategies: {
-      customStrategy: {
-        _scheme: '~/schemes/refresh-scheme',
-        endpoints: {
-          login: {
-            url: `/auth/jwt/create/`,
-            method: 'post',
-            propertyName: false,
-          },
-          user: {
-            url: `/auth/users/me/`,
-            method: 'get',
-          },
-          logout: false,
-        },
-        // tokenRequired: false,
-        // tokenType: false
-      },
-    },
-    plugins: ['~/plugins/axios.js', '~/plugins/persisted-state'],
-  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -128,7 +92,5 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {
-    transpile: ['@nuxtjs/auth'],
-  },
+  build: {},
 }

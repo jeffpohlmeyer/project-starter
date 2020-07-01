@@ -3,7 +3,7 @@ import * as Cookies from 'js-cookie'
 
 export default ({ store }) => {
   createPersistedState({
-    paths: 'refresh',
+    paths: ['auth'],
     storage: {
       getItem: (key) => Cookies.get(key),
       setItem: (key, value) =>

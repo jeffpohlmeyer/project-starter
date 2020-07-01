@@ -5,6 +5,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+
 import MobileMenuAuthenticated from '~/layouts/nav-menus/logged-in/MobileMenuAuthenticated'
 import StandardMenuAuthenticated from '~/layouts/nav-menus/logged-in/StandardMenuAuthenticated'
 import MobileMenuUnauthenticated from '~/layouts/nav-menus/not-logged-in/MobileMenuUnauthenticated'
@@ -18,14 +20,14 @@ export default {
     StandardMenuUnauthenticated,
   },
   computed: {
-    isLoggedIn() {
-      return this.$auth.loggedIn
-    },
+    ...mapGetters('auth',[
+      'loggedIn'
+    ]),
     mobile() {
       return this.$vuetify.breakpoint.xs
     },
     component() {
-      if (this.isLoggedIn) {
+      if (this.loggedIn) {
         return this.mobile ? MobileMenuAuthenticated : StandardMenuAuthenticated
       }
       return this.mobile

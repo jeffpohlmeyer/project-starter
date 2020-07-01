@@ -51,9 +51,6 @@ export default {
     email() {
       return this.$route.params.email
     },
-    isLoggedIn() {
-      return this.$auth.loggedIn
-    },
   },
   methods: {
     ...mapMutations({
@@ -62,15 +59,11 @@ export default {
     async updatePassword() {
       this.loading = true
       try {
-        const response = await this.$axios.$post(
-          'user/change-password-from-forgot',
-          {
-            email: this.email,
-            password: this.password,
-            token: this.$route.params.token,
-          }
-        )
-        await this.$auth.setUserToken(response.token)
+        await this.$axios.$post('user/change-password-from-forgot', {
+          email: this.email,
+          password: this.password,
+          token: this.$route.params.token,
+        })
         await this.$router.push('/user')
       } catch (err) {
         let message

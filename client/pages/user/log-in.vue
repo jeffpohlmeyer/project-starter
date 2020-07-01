@@ -58,20 +58,21 @@ export default {
   methods: {
     ...mapMutations({
       setSnackbarData: 'setSnackbarData',
-      setRefresh: 'setRefresh',
+      setAccess: 'auth/setAccess',
+      setRefresh: 'auth/setRefresh',
     }),
     async login() {
       if (this.$refs.form.validate()) {
         this.loading = true
         try {
-          const response = await this.$auth.loginWith('customStrategy', {
-            data: { username: this.username, password: this.password },
+          const response = await this.$axios.$post('auth/jwt/create/', {
+            username: this.username,
+            password: this.password,
           })
-          this.$axios.setHeader(
-            'Authorization',
-            `Bearer ${response.data.access}`
-          )
-          this.setRefresh(response.data.refresh)
+          this.$axios.setHeader('Authorization', `Bearer ${response.access}`)
+          this.setAccess(response.access)
+          this.setRefresh(response.refresh)
+          await this.$axios.$get('auth/users/me/')
           await this.$router.push('/user')
         } catch (err) {
           let message

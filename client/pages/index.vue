@@ -4,20 +4,20 @@
     <base-button @click="setToken">
       Set Token
     </base-button>
-    IsLoggedIn {{ isLoggedIn }}
+    LoggedIn {{ loggedIn }}
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   computed: {
-    isLoggedIn() {
-      return this.$auth.loggedIn
-    },
+    ...mapGetters('auth', ['loggedIn']),
   },
   methods: {
     setToken() {
-      this.$auth.setToken('customStrategy', 'test')
+      this.$store.commit('auth/setAccess', 'test')
     },
   },
 }
