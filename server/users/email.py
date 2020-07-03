@@ -10,7 +10,7 @@ class CustomActivationEmail(ActivationEmail):
     def get_context_data(self):
         context = super().get_context_data()
 
-        context['site_name'] = 'Envelope Budget'
+        context['site_name'] = config('SITE_NAME')
         context['url'] = f'{config("DOMAIN_NAME")}/{context["url"]}'
         return context
 
@@ -26,7 +26,7 @@ class CustomPasswordResetEmail(PasswordResetEmail):
         # PasswordResetEmail can be deleted
         context = super().get_context_data()
 
-        context['site_name'] = 'Envelope Budget'
+        context['site_name'] = config('SITE_NAME')
         context['url'] = f'{config("DOMAIN_NAME")}/{context["url"]}'
         return context
 
@@ -40,11 +40,11 @@ class CustomUsernameChangedConfirmationEmail(UsernameChangedConfirmationEmail):
 
 
 class CustomUsernameResetEmail(UsernameResetEmail):
-    template_name = "email/username_reset.html"
+    template_name = "email/username_reset_new.html"
 
     def get_context_data(self):
         context = super().get_context_data()
 
-        context['site_name'] = 'Envelope Budget'
+        context['site_name'] = config('SITE_NAME')
         context['url'] = f'{config("DOMAIN_NAME")}/{context["url"]}'
         return context

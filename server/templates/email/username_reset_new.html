@@ -9,7 +9,7 @@
 
 {% trans "Please go to the following page and choose a new username:" %}
 {{ url|safe }}
-{% trans "Your username, in case you've forgotten:" %} {{ user.get_username }}
+{% trans "Your current username, in case you don't want to change it, is:" %} {{ user.get_username }}
 
 {% trans "Thanks for using our site!" %}
 
@@ -21,7 +21,7 @@
 
 <p>{% trans "Please go to the following page and choose a new username:" %}</p>
 <a href="{{ url|safe }}">{{ url|safe }}</a>
-<p>{% trans "Your username, in case you've forgotten:" %} <b>{{ user.get_username }}</b></p>
+<p>{% trans "Your current username, in case you don't want to change it, is:" %} <b>{{ user.get_username }}</b></p>
 
 <p>{% trans "Thanks for using our site!" %}</p>
 
