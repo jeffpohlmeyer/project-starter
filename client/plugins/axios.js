@@ -1,6 +1,9 @@
 export default function ({ $axios, store }) {
   $axios.onRequest((config) => {
-    config.headers.Authorization = `Bearer ${store.state.auth.access}`
+    const access = store.state.auth.access
+    if (access) {
+      config.headers.Authorization = `Bearer ${store.state.auth.access}`
+    }
     // console.log('Making request to ' + config.url)
   })
 
@@ -9,7 +12,7 @@ export default function ({ $axios, store }) {
     const code = parseInt(error.response && error.response.status)
     if (code === 401 && store.state.auth.loggedIn) {
       if (error.response.config.url.includes('/jwt/refresh/')) {
-        store.commit('auth/clearTokens');
+        store.commit('auth/clearTokens')
         throw error
       } else {
         try {

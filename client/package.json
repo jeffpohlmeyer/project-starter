@@ -18,6 +18,8 @@
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "js-cookie": "^2.2.1",
+    "lodash.tolower": "^4.1.2",
+    "lodash.upperfirst": "^4.3.1",
     "nuxt": "^2.13.0",
     "vuex-persistedstate": "^3.0.1"
   },
@@ -27,6 +29,8 @@
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
+    "@types/lodash.tolower": "^4.1.6",
+    "@types/lodash.upperfirst": "^4.3.6",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",

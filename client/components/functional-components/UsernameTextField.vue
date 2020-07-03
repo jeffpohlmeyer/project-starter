@@ -11,8 +11,11 @@
     validate-on-blur
     :autofocus="autofocus"
     append-outer-icon="mdi-account-outline"
+    :error="error"
+    :error-messages="errorMessages"
     @input="input"
-    @keydown.enter="keydown('enterPressed')"
+    @keydown.enter.prevent="keydown('enterPressed')"
+    @blur="blur"
   />
 </template>
 
@@ -38,10 +41,31 @@ export default {
       required: false,
       default: false,
     },
+    error: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    errorMessages: {
+      type: String || Array,
+      required: false,
+      default: '',
+    },
+    usernameCompare: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
   computed: {
     rules() {
-      return [(v) => !!v || 'Required']
+      const baseRules = [(v) => !!v || 'Required']
+      return this.usernameCompare
+        ? [
+            ...baseRules,
+            (v) => v === this.usernameCompare || 'Usernames must match',
+          ]
+        : baseRules
     },
   },
   methods: {
@@ -50,6 +74,9 @@ export default {
     },
     keydown(value) {
       this.$emit(value)
+    },
+    blur() {
+      this.$emit('blur')
     },
   },
 }

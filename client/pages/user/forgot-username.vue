@@ -26,7 +26,7 @@ export default {
     async triggerForgotEvent(email) {
       this.loading = true
       try {
-        await this.$axios.$post('users/auth/reset_password/', {
+        await this.$axios.$post('users/auth/reset_username/', {
           email,
         })
         await this.$router.push('notify/reset')

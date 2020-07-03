@@ -6,7 +6,7 @@
 export default {
   asyncData(context) {
     // eslint-disable-next-line
-    const res = context.app.$axios.$get('auth/users/me/')
+    const res = context.app.$axios.$get('users/auth/me/')
     return { abc: res.data }
   },
 }

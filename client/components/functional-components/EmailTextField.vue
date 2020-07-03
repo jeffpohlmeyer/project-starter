@@ -9,8 +9,11 @@
     validate-on-blur
     :autofocus="autofocus"
     append-outer-icon="mdi-email"
-    @keydown.enter="keydown('enterPressed')"
+    :error="error"
+    :error-messages="errorMessages"
+    @keydown.enter.prevent="keydown('enterPressed')"
     @input="input($event)"
+    @blur="blur"
   />
 </template>
 
@@ -25,6 +28,16 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    error: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    errorMessages: {
+      type: String || Array,
+      required: false,
+      default: '',
     },
   },
   computed: {
@@ -44,6 +57,9 @@ export default {
     },
     keydown(value) {
       this.$emit(value)
+    },
+    blur() {
+      this.$emit('blur')
     },
   },
 }

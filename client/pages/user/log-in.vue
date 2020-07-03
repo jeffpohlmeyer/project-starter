@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" v-model="valid">
     <BaseUserComponent>
-      <v-row justify="space-between" no-gutters>
+      <v-row justify="center" no-gutters>
         <v-col cols="12">
           <UsernameTextField
             v-model="username"
@@ -11,8 +11,15 @@
         </v-col>
         <v-col cols="12">
           <PasswordTextField v-model="password" @enterPressed="login" />
+        </v-col>
+        <v-col cols="12" md="3">
           <p class="text-center">
             <nuxt-link to="forgot-password">Forgot password?</nuxt-link>
+          </p>
+        </v-col>
+        <v-col cols="12" md="3">
+          <p class="text-center">
+            <nuxt-link to="forgot-username">Forgot username?</nuxt-link>
           </p>
         </v-col>
       </v-row>
@@ -39,7 +46,8 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
+
 import PasswordTextField from '~/components/functional-components/PasswordTextField.vue'
 import UsernameTextField from '~/components/functional-components/UsernameTextField'
 
@@ -58,8 +66,9 @@ export default {
   methods: {
     ...mapMutations({
       setSnackbarData: 'setSnackbarData',
-      setAccess: 'auth/setAccess',
-      setRefresh: 'auth/setRefresh',
+    }),
+    ...mapActions({
+      processLoggedInData: 'auth/processLoggedInData',
     }),
     async login() {
       if (this.$refs.form.validate()) {
@@ -69,17 +78,14 @@ export default {
             username: this.username,
             password: this.password,
           })
-          this.$axios.setHeader('Authorization', `Bearer ${response.access}`)
-          this.setAccess(response.access)
-          this.setRefresh(response.refresh)
-          await this.$axios.$get('auth/users/me/')
+          await this.processLoggedInData(response)
           await this.$router.push('/user')
         } catch (err) {
           let message
           const snackbar = true
           try {
             message =
-              err.response.data.error || 'Email or password is incorrect.'
+              err.response.data.detail || 'Email or password is incorrect.'
           } catch {
             message =
               'There was an unidentified error.  Please try again later.'

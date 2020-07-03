@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
 import MobileMenuAuthenticated from '~/layouts/nav-menus/logged-in/MobileMenuAuthenticated'
 import StandardMenuAuthenticated from '~/layouts/nav-menus/logged-in/StandardMenuAuthenticated'
@@ -20,9 +20,7 @@ export default {
     StandardMenuUnauthenticated,
   },
   computed: {
-    ...mapGetters('auth',[
-      'loggedIn'
-    ]),
+    ...mapGetters('auth', ['loggedIn']),
     mobile() {
       return this.$vuetify.breakpoint.xs
     },

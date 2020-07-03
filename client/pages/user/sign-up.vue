@@ -6,11 +6,20 @@
           <UsernameTextField
             v-model="username"
             autofocus
+            :error="usernameError"
+            :error-messages="usernameErrorMessages"
             @enterPressed="signup"
+            @blur="checkUsername"
           />
         </v-col>
         <v-col cols="12">
-          <EmailTextField v-model="email" @enterPressed="signup" />
+          <EmailTextField
+            v-model="email"
+            :error="emailError"
+            :error-messages="emailErrorMessages"
+            @enterPressed="signup"
+            @blur="checkEmail"
+          />
         </v-col>
         <v-col cols="12">
           <PasswordTextField v-model="password" @enterPressed="signup" />
@@ -42,6 +51,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import useErrorParser from '~/utils/parse-errors'
 
 import PasswordTextField from '~/components/functional-components/PasswordTextField.vue'
 import UsernameTextField from '~/components/functional-components/UsernameTextField'
@@ -56,7 +66,11 @@ export default {
   },
   data: () => ({
     username: '',
+    usernameError: false,
+    usernameErrorMessages: '',
     email: '',
+    emailError: false,
+    emailErrorMessages: '',
     password: '',
     password2: '',
     loading: false,
@@ -70,7 +84,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true
         try {
-          await this.$axios.$post('auth/users/', {
+          await this.$axios.$post('users/auth/', {
             username: this.username,
             email: this.email,
             password: this.password,
@@ -78,10 +92,10 @@ export default {
           })
           await this.$router.push('notify')
         } catch (err) {
-          let message
+          let message = ''
           const snackbar = true
           try {
-            message = err.response.data.error
+            message = useErrorParser(err.response.data)
           } catch {
             message =
               'There was an unidentified error.  Please try again later.'
@@ -93,6 +107,28 @@ export default {
         } finally {
           this.loading = false
         }
+      }
+    },
+    async checkUsername() {
+      try {
+        await this.$axios.get(
+          `users/check_availability/?username=${this.username}`
+        )
+        this.usernameErrorMessages = ''
+        this.usernameError = false
+      } catch (err) {
+        this.usernameErrorMessages = err.response.data
+        this.usernameError = true
+      }
+    },
+    async checkEmail() {
+      try {
+        await this.$axios.get(`users/check_availability/?email=${this.email}`)
+        this.emailErrorMessages = ''
+        this.emailError = false
+      } catch (err) {
+        this.emailErrorMessages = err.response.data
+        this.emailError = true
       }
     },
   },

@@ -1,51 +1,97 @@
 <template>
-  <v-row v-if="!error" justify="center" no-gutters>
-    <v-col cols="4">
-      <p class="display-4">
-        Success
-      </p>
-      <p class="display-1">
-        You have confirmed your email address and activated your account. Click
-        <nuxt-link to="/user/log-in">here</nuxt-link> to log in.
-      </p>
-    </v-col>
-  </v-row>
+  <v-form v-if="error" ref="form" v-model="valid">
+    <BaseUserComponent>
+      <EmailTextField
+        v-model="email"
+        autofocus
+        @enterPressed="reGenerateEmail"
+      />
+      <template v-slot:title>
+        Re-Send Activation Email
+      </template>
+      <template v-slot:proceed>
+        <base-button :loading="loading" block @click="reGenerateEmail">
+          Send Email
+        </base-button>
+      </template>
+    </BaseUserComponent>
+  </v-form>
   <div v-else>Please wait</div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
+import useErrorParser from '~/utils/parse-errors'
+import BaseUserComponent from '~/components/user/BaseUserComponent'
+import EmailTextField from '~/components/functional-components/EmailTextField'
 
 export default {
+  components: {
+    BaseUserComponent,
+    EmailTextField,
+  },
   data: () => ({
-    error: true,
+    email: '',
+    valid: true,
+    error: false,
     loading: false,
   }),
   async mounted() {
     try {
-      await this.$axios.$post('auth/users/activation/', {
+      const response = await this.$axios.$post('users/auth/activation/', {
         uid: this.$route.params.uid,
         token: this.$route.params.token,
       })
+      await this.processLoggedInData(response)
       this.error = false
     } catch (err) {
-      let message
+      let message = ''
       try {
-        message = err.response.data.error
+        message = useErrorParser(err.response)
       } catch {
-        message = 'There was an unidentified error.  Please try again later.'
+        message =
+          'There was a problem with the activation link.  Please create another.'
       }
       this.setSnackbarData({
         snackbar: true,
         message,
       })
-      await this.$router.push(`/user/re-generate/confirm/${this.email}`)
+      this.error = true
     }
   },
   methods: {
     ...mapMutations({
       setSnackbarData: 'setSnackbarData',
     }),
+    ...mapActions({
+      processLoggedInData: 'auth/processLoggedInData',
+    }),
+    async reGenerateEmail() {
+      if (this.$refs.form.validate()) {
+        this.loading = true
+        try {
+          await this.$axios.$post('users/auth/resend_activation/', {
+            email: this.email,
+          })
+          await this.$router.push('/user/notify')
+        } catch (err) {
+          let message = ''
+          const snackbar = true
+          try {
+            message = useErrorParser(err.response.data)
+          } catch {
+            message =
+              'There was an unidentified error.  Please try again later.'
+          }
+          this.setSnackbarData({
+            snackbar,
+            message,
+          })
+        } finally {
+          this.loading = false
+        }
+      }
+    },
   },
 }
 </script>
